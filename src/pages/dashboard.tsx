@@ -1,31 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Head from "next/head";
-import { account } from "@/models/appwrite";
-import { useRouter } from "next/router";
 import Button from "@/components/Button";
 
 const AuthPage = () => {
-  const router = useRouter();
-  const [session, setSession] = useState<any[]>();
-
-  const handleCheckSession = async () => {
-    try {
-      const sessions = await account.listSessions();
-      setSession(sessions.sessions);
-    } catch (error) {
-      console.log(error);
-      router.push("/");
-    }
-  };
-
-  const handleLogout = async () => {
-    await account.deleteSession("current");
-    return router.push("/");
-  };
-
-  useEffect(() => {
-    handleCheckSession();
-  }, []);
+  const [session, setSession] = useState(true);
+  const handleLogout = async () => {};
   return (
     <div>
       {session ? (

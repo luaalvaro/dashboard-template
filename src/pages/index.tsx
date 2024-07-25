@@ -1,11 +1,8 @@
 import React, { useState } from "react";
 import Head from "next/head";
 import Button from "@/components/Button";
-import { account, ID } from "@/models/appwrite";
-import { useRouter } from "next/router";
 
 const AuthPage = () => {
-  const router = useRouter();
   const [isRegistering, setIsRegistering] = useState(false);
   const [isLogining, setIsLogiging] = useState(false);
   const [form, setForm] = React.useState({
@@ -16,46 +13,16 @@ const AuthPage = () => {
 
   const handleRegister = async () => {
     console.log(form);
-
-    try {
-      setIsRegistering(true);
-      const created = await account.create(
-        ID.unique(),
-        form.email,
-        form.password,
-        form.fullname
-      );
-
-      console.log(created);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsRegistering(false);
-    }
   };
 
   const handleSubmit = async () => {
     console.log(form);
-
-    try {
-      setIsLogiging(true);
-      const session = await account.createEmailPasswordSession(
-        form.email,
-        form.password
-      );
-
-      return router.push("/dashboard");
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLogiging(false);
-    }
   };
 
   return (
     <div className="flex min-h-screen flex-1 flex-col justify-center bg-[#010101] px-6 py-12 text-white lg:px-8">
       <Head>
-        <title>GZAPPY - FAZER LOGIN</title>
+        <title>GZAPPY</title>
       </Head>
 
       <div className="mx-auto mt-8 w-full max-w-[388px] rounded bg-[#f2f2f2] p-3 text-black md:p-8">
