@@ -1,20 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import Head from "next/head";
 import Button from "@/components/Button";
+import { account, ID } from "@/models/appwrite";
+import { useRouter } from "next/router";
 
 const AuthPage = () => {
+  const router = useRouter();
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [isLogining, setIsLogiging] = useState(false);
   const [form, setForm] = React.useState({
     fullname: "",
     email: "",
     password: "",
   });
 
-  const handleRegister = () => {
+  const handleRegister = async () => {
     console.log(form);
+
+    try {
+      setIsRegistering(true);
+      const created = await account.create(
+        ID.unique(),
+        form.email,
+        form.password,
+        form.fullname
+      );
+
+      console.log(created);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsRegistering(false);
+    }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log(form);
+
+    try {
+      setIsLogiging(true);
+      const session = await account.createEmailPasswordSession(
+        form.email,
+        form.password
+      );
+
+      return router.push("/dashboard");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLogiging(false);
+    }
   };
 
   return (
@@ -92,8 +127,16 @@ const AuthPage = () => {
               label="Registrar"
               variant="secondary"
               onClick={handleRegister}
+              isLoading={isRegistering}
+              isDisabled={isRegistering}
             />
-            <Button label="Acessar" variant="primary" onClick={handleSubmit} />
+            <Button
+              label="Acessar"
+              variant="primary"
+              onClick={handleSubmit}
+              isLoading={isLogining}
+              isDisabled={isLogining}
+            />
           </div>
         </div>
       </div>
